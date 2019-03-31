@@ -20,7 +20,7 @@ public class User {
 	public User() {} //public no args constructor
 	
 	/*
-	 * User object construct without id
+	 * User object construct without id field
 	 */
 	public User(String username, String password, String firstname, String lastname, String email, String role) {
 		super();
@@ -35,7 +35,7 @@ public class User {
 	
 
 	/*
-	 * General User object constructor
+	 * General User object constructor with id field
 	 */
 	public User(int id, String username, String password, String firstname, String lastname, String email,
 			String role) {
