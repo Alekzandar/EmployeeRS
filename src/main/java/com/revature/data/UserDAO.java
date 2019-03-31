@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.revature.pojos.TestUser;
+
 import com.revature.pojos.User;
 import com.revature.util.ConnectionFactory;
 
