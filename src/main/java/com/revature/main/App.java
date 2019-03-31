@@ -1,5 +1,6 @@
 package com.revature.main;
 
+import com.revature.data.ReimbursementDAO;
 import com.revature.data.UserDAO;
 import com.revature.service.TestUserService;
 
@@ -11,8 +12,11 @@ public class App {
 	 */
 	public static void main(String[] args) {
 		
-		UserDAO dao = new UserDAO(); 
-		System.out.println(dao.getUsers() + "\n");
+		//UserDAO dao = new UserDAO(); 
+		//System.out.println("Users: "+ dao.getUsers() + "\n");
+		
+		ReimbursementDAO reimb = new ReimbursementDAO();
+		System.out.println("Reimbursements: " + reimb.getReimbursements() + "\n");
 		 
 		
 		TestUserService service = new TestUserService();

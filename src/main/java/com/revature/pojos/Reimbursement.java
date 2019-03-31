@@ -3,6 +3,8 @@
  */
 package com.revature.pojos;
 
+import java.sql.Timestamp;
+
 /**
  * Our general Reimbursement Class for Employee Reimbursement System containing:
  * Reimbursement Class 
@@ -11,9 +13,9 @@ package com.revature.pojos;
  */
 public class Reimbursement {
 	private int id;
-	private String amount;
-	private String submittedTime;
-	private String resolvedTime;
+	private long amount;
+	private Timestamp submittedTime;
+	private Timestamp resolvedTime;
 	private String description;
 	private String author;
 	private String resolver;
@@ -27,7 +29,7 @@ public class Reimbursement {
 	/*
 	 * Reimbursement object constructor without id field
 	 */
-	public Reimbursement(String amount, String submittedTime, String resolvedTime, String description, String author,
+	public Reimbursement(long amount, Timestamp submittedTime, Timestamp resolvedTime, String description, String author,
 			String resolver, String status, String type) {
 		super();
 		this.amount = amount;
@@ -45,7 +47,7 @@ public class Reimbursement {
 	/*
 	 * Reimbursement object constructor with id field
 	 */
-	public Reimbursement(int id, String amount, String submittedTime, String resolvedTime, String description,
+	public Reimbursement(int id, long amount, Timestamp submittedTime, Timestamp resolvedTime, String description,
 			String author, String resolver, String status, String type) {
 		super();
 		this.id = id;
@@ -66,22 +68,22 @@ public class Reimbursement {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getAmount() {
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(String amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
-	public String getSubmittedTime() {
+	public Timestamp getSubmittedTime() {
 		return submittedTime;
 	}
-	public void setSubmittedTime(String submittedTime) {
+	public void setSubmittedTime(Timestamp submittedTime) {
 		this.submittedTime = submittedTime;
 	}
-	public String getResolvedTime() {
+	public Timestamp getResolvedTime() {
 		return resolvedTime;
 	}
-	public void setResolvedTime(String resolvedTime) {
+	public void setResolvedTime(Timestamp resolvedTime) {
 		this.resolvedTime = resolvedTime;
 	}
 	public String getDescription() {
@@ -114,15 +116,16 @@ public class Reimbursement {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		return "Reimbursement [id=" + id + ", amount=" + amount + ", submittedTime=" + submittedTime + ", resolvedTime="
 				+ resolvedTime + ", description=" + description + ", author=" + author + ", resolver=" + resolver
 				+ ", status=" + status + ", type=" + type + "]";
 	}
-	
+
+
 	
 	
 	
