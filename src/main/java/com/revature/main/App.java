@@ -1,8 +1,8 @@
 package com.revature.main;
 
 import com.revature.data.ReimbursementDAO;
-import com.revature.data.UserDAO;
 import com.revature.service.TestUserService;
+import com.revature.service.UserService;
 
 public class App {
 	
@@ -15,12 +15,14 @@ public class App {
 		//UserDAO dao = new UserDAO(); 
 		//System.out.println("Users: "+ dao.getUsers() + "\n");
 		
-		ReimbursementDAO reimb = new ReimbursementDAO();
-		System.out.println("Reimbursements: " + reimb.getReimbursements() + "\n");
+		//ReimbursementDAO reimb = new ReimbursementDAO();
+		//System.out.println("Reimbursements: " + reimb.getReimbursements() + "\n");
 		 
+		UserService service = new UserService();
+		System.out.println(service.logIn("testusername", "testpass"));
 		
-		TestUserService service = new TestUserService();
-		System.out.println(service.logIn("genesisb", "123"));
+		//TestUserService serviceB = new TestUserService();
+		//System.out.println(serviceB.logIn("genesisb", "123"));
 
 		//Created new constructor that only takes in username, password, and bio since our ID's are auto-generated
 		//will return null if the user already exists under name

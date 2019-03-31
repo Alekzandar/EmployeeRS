@@ -4,6 +4,7 @@
 package com.revature.pojos;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * Our general Reimbursement Class for Employee Reimbursement System containing:
@@ -14,8 +15,8 @@ import java.sql.Timestamp;
 public class Reimbursement {
 	private int id;
 	private long amount;
-	private Timestamp submittedTime;
-	private Timestamp resolvedTime;
+	private String submittedTime;
+	private String resolvedTime;
 	private String description;
 	private String author;
 	private String resolver;
@@ -33,8 +34,10 @@ public class Reimbursement {
 			String resolver, String status, String type) {
 		super();
 		this.amount = amount;
-		this.submittedTime = submittedTime;
-		this.resolvedTime = resolvedTime;
+		String submitted = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(submittedTime);
+		String resolved = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(resolvedTime);
+		this.submittedTime = submitted;
+		this.resolvedTime = resolved;
 		this.description = description;
 		this.author = author;
 		this.resolver = resolver;
@@ -52,8 +55,10 @@ public class Reimbursement {
 		super();
 		this.id = id;
 		this.amount = amount;
-		this.submittedTime = submittedTime;
-		this.resolvedTime = resolvedTime;
+		String submitted = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(submittedTime);
+		String resolved = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(resolvedTime);
+		this.submittedTime = submitted;
+		this.resolvedTime = resolved;
 		this.description = description;
 		this.author = author;
 		this.resolver = resolver;
@@ -74,16 +79,16 @@ public class Reimbursement {
 	public void setAmount(long amount) {
 		this.amount = amount;
 	}
-	public Timestamp getSubmittedTime() {
+	public String getSubmittedTime() {
 		return submittedTime;
 	}
-	public void setSubmittedTime(Timestamp submittedTime) {
+	public void setSubmittedTime(String submittedTime) {
 		this.submittedTime = submittedTime;
 	}
-	public Timestamp getResolvedTime() {
+	public String getResolvedTime() {
 		return resolvedTime;
 	}
-	public void setResolvedTime(Timestamp resolvedTime) {
+	public void setResolvedTime(String resolvedTime) {
 		this.resolvedTime = resolvedTime;
 	}
 	public String getDescription() {

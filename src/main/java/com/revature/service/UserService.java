@@ -1,7 +1,8 @@
 package com.revature.service;
 
-import com.revature.data.TestUserDAO;
+import com.revature.data.UserDAO;
 import com.revature.pojos.TestUser;
+import com.revature.pojos.User;
 
 /*
  * CRUD functionality in DAO, anything else in our service.
@@ -12,7 +13,7 @@ import com.revature.pojos.TestUser;
  */
 public class UserService {
 	
-	static TestUserDAO dao = new TestUserDAO();
+	static UserDAO dao = new UserDAO();
 	
 	/*
 	 * What this method will do is take the only two credentials present at login (username and password)
@@ -22,8 +23,8 @@ public class UserService {
 	 * All up to you, but just make sure your servlet layer passes the right values in.
 	 */
 
-	public TestUser logIn(String username, String password) {
-		TestUser u = dao.getByUsername(username);
+	public User logIn(String username, String password) {
+		User u = dao.getByUsername(username);
 		if(u == null) {
 			return null;
 		} else {
@@ -36,15 +37,10 @@ public class UserService {
 	}
 	
 	
-	public TestUser addUser(TestUser u) {
-		if(dao.getByUsername(u.getUsername()) == null){
-			//now we know the username is unique; can add user
-			return dao.addUser(u);
-		} else {
-			//user already exists
-			return null;
-		}
-	}
-
+	/*
+	 * public TestUser addUser(TestUser u) { if(dao.getByUsername(u.getUsername())
+	 * == null){ //now we know the username is unique; can add user return
+	 * dao.addUser(u); } else { //user already exists return null; } }
+	 */
 	
 }
