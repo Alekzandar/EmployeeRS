@@ -60,7 +60,6 @@ public class UserDAO {
 	/*
 	 * Prepared Statements: more secure than general statements, re-usable
 	 */
-	
 	public User getByUsername(String username) {
 		User u = null;
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){  				//any resource that allots memory elsewhere or utilizes tools elsewhere -> must close

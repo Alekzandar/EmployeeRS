@@ -4,8 +4,8 @@ import com.revature.data.UserDAO;
 import com.revature.pojos.User;
 
 /*
- * CRUD functionality in DAO, anything else in our service.
- * 
+ * User Service layer for Logging in Employee/Manager Users
+ * @author Aleksandar A.
  */
 public class UserService {
 	
@@ -16,15 +16,15 @@ public class UserService {
 	 * Otherwise return null.
 	 */
 
-	public boolean logIn(String username, String password) {
+	public User logIn(String username, String password) {
 		User u = dao.getByUsername(username);
 		if(u == null) {
-			return false;
+			return null;
 		} else {
 			if(u.getPassword().equals(password)) {
-				return true;
+				return u;
 			} else {
-				return false;
+				return null;
 			}
 		}
 	}

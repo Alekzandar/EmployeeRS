@@ -1,7 +1,6 @@
 package com.revature.main;
 
-import com.revature.data.ReimbursementDAO;
-import com.revature.service.UserService;
+import com.revature.service.ReimbursementService;
 
 public class App {
 	
@@ -17,8 +16,11 @@ public class App {
 		//ReimbursementDAO reimb = new ReimbursementDAO();
 		//System.out.println("Reimbursements: " + reimb.getReimbursements() + "\n");
 		 
-		UserService service = new UserService();
-		System.out.println(service.logIn("testusername", "testpass"));
+		//UserService service = new UserService();
+		//System.out.println(service.logIn("testusername", "testpass"));
+		
+		//ReimbursementService service = new ReimbursementService();
+		//System.out.println(service.getUserReimbursement("testusername"));
 		
 		//TestUserService serviceB = new TestUserService();
 		//System.out.println(serviceB.logIn("genesisb", "123"));

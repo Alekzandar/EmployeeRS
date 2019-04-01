@@ -73,7 +73,7 @@ public class Reimbursement {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public double getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 	public void setAmount(long amount) {
