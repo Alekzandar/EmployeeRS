@@ -8,8 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 
 import com.revature.pojos.User;
+import com.revature.service.UserService;
 import com.revature.util.ConnectionFactory;
 
 /*
@@ -18,7 +20,7 @@ import com.revature.util.ConnectionFactory;
 public class UserDAO {
 
 	
-	
+	private static Logger log = Logger.getLogger(UserDAO.class);
 	/*
 	 * Retrieve an ArrayList of Users with ID, firstname, lastname, username, password, email and role
 	 */
@@ -68,7 +70,7 @@ public class UserDAO {
 					"LEFT OUTER JOIN ERS_USER_ROLES\r\n" + 
 					"ON U.USER_ROLE_ID = ers_user_roles.ers_user_role_id\r\n" + 
 					"WHERE LOWER(ERS_USERNAME) = ? "; 
-			
+			log.info("GETTING PREPARED STATEMENET FOR GETBYUSERNAME");
 			PreparedStatement ps = conn.prepareStatement(sql); 
 			ps.setString(1,  username.toLowerCase()); 
 			ResultSet rs = ps.executeQuery(); 		

@@ -1,7 +1,10 @@
 package com.revature.service;
 
+import org.apache.log4j.Logger;
+
 import com.revature.data.UserDAO;
 import com.revature.pojos.User;
+import com.revature.servlets.LoginServlet;
 
 /*
  * User Service layer for Logging in Employee/Manager Users
@@ -10,7 +13,7 @@ import com.revature.pojos.User;
 public class UserService {
 	
 	static UserDAO dao = new UserDAO();
-	
+	private static Logger log = Logger.getLogger(UserService.class);
 	/*
 	 * Validate user credential by username and "Log In" if valid username and password.
 	 * Otherwise return null.
@@ -18,6 +21,7 @@ public class UserService {
 
 	public User logIn(String username, String password) {
 		User u = dao.getByUsername(username);
+		
 		if(u == null) {
 			return null;
 		} else {

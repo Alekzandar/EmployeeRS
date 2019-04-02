@@ -1,7 +1,9 @@
 package com.revature.util;
 
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -47,11 +49,12 @@ public class ConnectionFactory {
 	public Connection getConnection() {
 		Connection conn = null;
 		Properties prop = new Properties();
-		//String path = "C:/Users/Genesis/my_git_repos/1810-oct22/Week2/jdbc/bookstore-jdbc/src/main/resources/database.properties";
-		String path = "src/main/resources/database.properties"; //<- where we populate the below from
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("database.properties");
+		//System.out.println(in);
+		//String path = "/src/main/resources/database.properties"; //<- where we populate the below from
 		
 			try {
-				prop.load(new FileReader(path));
+				prop.load(new BufferedReader(new InputStreamReader(in)));
 				//the following line of code uses reflection and the 
 				// .properties file in order to instantiate our driver
 				//  class listed in the file
