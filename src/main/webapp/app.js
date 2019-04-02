@@ -21,20 +21,18 @@ function loadLandingView(){
 		if(xhr.readyState==4){ // success
 			console.log('response received');
 			if(xhr.status ==200){
-				// success; we know our response will be html
-				$('#view').html(xhr.responseText); // get element of id view
-													// and populate with
-													// responseText
-				// ADD EVENT LISTENERS TO HTML //responseText is the html that
-				// we got back from our servlet
+			
+				$('#view').html(xhr.responseText); 
+										
+				// ADD EVENT LISTENERS TO HTML 
 			
 				// changed view
 				$('#view').html(xhr.responseText);
 				
 				// do things with that view
-				$('#login').on('click', loginUser); // don't put parenth in
-													// event listener - call
-													// when invoked
+				$('#login').on('click', loginUser); 
+													
+													
 			}										
 			if(xhr.status >399){
 				// some sort of error
@@ -42,16 +40,15 @@ function loadLandingView(){
 		}
 	}
 	
-	xhr.open("GET", "landing.view"); // loadview is our servlet for our
-										// partial
-									// landing.html as specified in our doGet in
-									// servlet
-									// changed to landing.vew by generalizing
-									// servlet
-	xhr.send(); 	// sent to index.html where our app.js is called
+	xhr.open("GET", "landing.view");
+	console.log("Landing XHR open");	// landing.html as specified in our doGet in
+	xhr.send(); 				// sent to index.html where our app.js is called
 	
 }
 
+/*
+ * Function to attempt logging in the individual with the given credentials.
+ */
 function loginUser(){
 	var name = $('#username').val();
 	var pw = $('#password').val();
@@ -70,18 +67,18 @@ function loginUser(){
 														// object
 			console.log(xhr.getAllResponseHeaders());
 			if(user==null){
-				// not logged in -- inform about invalid credentials
+					// not logged in -- inform about invalid credentials
 				$('#message').html('Sorry! Invalid credentials');
 			}else{
 				// logged in successfully
-				console.log(user);
-				//loadHomeView(user);
+				console.log("User generated from LogIn" );
+				loadEmployeeView(user);
 				
 			}
 		}
 	}
 	
-	xhr.open("POST", "login"); // request to log-in servlet
+	xhr.open("POST", "login"); // request to Login Servlet
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.send(JSON.stringify(user));
 	}else{
@@ -91,11 +88,42 @@ function loginUser(){
 	}
 }
 
+/*
+ * Validate if the input credentials are a string or not
+ */
 function validateString(str){
-	if(str == null || str == ''){ // an invalid string
+	if(str == null || str == ''){ 		// an invalid string
 		return false;
 	}else{
 		return true;
 	}
-	
 }
+
+
+/*
+ * Generate Employee View upon successful log-in when an employee.
+ */
+function loadEmployeeView(user){
+	var xhr = new XMLHttpRequest();      
+	console.log("in loadEmployeeView function");
+	xhr.onreadystatechange = function(){
+	
+		if(xhr.readyState==4){
+			
+			if(xhr.status == 200){
+				$('#view').html(xhr.responseText);
+//			console.log("ready state");
+			$('#view').html(xhr.responseText); 	//Load this onto 'View' root view for our index.html
+			$('#firstname').html(user.firstname);
+			$('#lastname').html(user.lastname);
+			$('#role').html(user.role);
+			}
+			else if (xhr.status==404){
+				console.error(xhr.responseText);
+			}
+		}
+	}
+	xhr.open("GET", "employee.view");
+	xhr.send();
+}
+
