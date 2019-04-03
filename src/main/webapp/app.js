@@ -224,7 +224,7 @@ function sendReimb() {
 			// get response body and console.login
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				
-				xhr.open("POST", "sendreimb"); // request to Login Servlet
+				xhr.open("POST", "sendreimb"); // request to SendReimb Servlet
 				xhr.setRequestHeader("Content-type", "application/json");
 				xhr.send(reimbRequest);
 			}
