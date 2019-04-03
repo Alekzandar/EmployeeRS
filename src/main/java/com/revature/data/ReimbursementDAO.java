@@ -134,14 +134,15 @@ public class ReimbursementDAO {
 														
 			ps.setLong(1, reimb.getAmount());	
 			ps.setString(2, reimb.getDescription());
-			ps.setString(3, reimb.getAuthor());
-			ps.setString(4, reimb.getResolver());
-			ps.setString(5, reimb.getStatus());
-			ps.setString(6, reimb.getType());
+			ps.setInt(3, reimb.getAuthor_id());
+			ps.setInt(4, reimb.getResolver_id());
+			ps.setInt(5, reimb.getStatus_id());
+			ps.setInt(6, reimb.getType_id());
+
 			
 			int numRowsAffected = ps.executeUpdate(); //don't need to set the executeUpdate to anything unless using num rows affected
 			
-			System.out.println("ADDED" + numRowsAffected + "USER(S) TO DB");
+			System.out.println("ADDED" + numRowsAffected + " Reimbursements(S) TO DB");
 			
 			if(numRowsAffected ==1) {
 				ResultSet pk = ps.getGeneratedKeys(); 	//result set of primary key

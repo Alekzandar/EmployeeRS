@@ -197,7 +197,7 @@ function isValidJson(json) {
 
 
 /*
- * Function to retrieve staged user on click and send HTTP POST request
+ * Function to retrieve staged reimbursement request on click and send HTTP POST request
  */
 function sendReimb() {
 	var selectedType = $('#type').children("option:selected").val();
