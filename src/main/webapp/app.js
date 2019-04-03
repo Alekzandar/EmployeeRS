@@ -151,8 +151,8 @@ function stageUser(user) {
 	var selectedType = $('#type').children("option:selected").val();
 	var authorfirst = $('#authorfirst').val();
 	var authorlast = $('#authorlast').val();
-	var amount = $('#amount').val();
-	var description = $('#description').val();
+	var reimbamount = $('#amount').val();
+	var reimbdesc = $('#description').val();
 
 	// cast reimbursement type to DB foreign key relationship
 	if (selectedType == "Lodging") {
@@ -167,12 +167,12 @@ function stageUser(user) {
 
 	// create object to be added to DB
 	var reimbursement = {
-		reimbamount : amount,
-		reimbdisc : description,
-		reimbauthor : id,
-		reimbresolver : 2, // default resolver, overwritten when resolved
-		reimbstatus : 1, // pending
-		reimbtype : selectedType
+		amount : reimbamount,
+		description : reimbdesc,
+		author_id : id,
+		resolver_id : 2, // default resolver, overwritten when resolved
+		status_id : 1, // pending
+		type_id: selectedType
 	};
 	var reimbObj = JSON.stringify(reimbursement);
 	console.log("Reimbursement Object: " + reimbObj);
@@ -201,36 +201,45 @@ function isValidJson(json) {
  */
 function sendReimb() {
 	var selectedType = $('#type').children("option:selected").val();
-	var description = $('#description').val();
-	var amount = $('#amount').val();
+	var reimbdesc = $('#description').val();
+	var reimbamount = $('#amount').val();
 	console.log("AMOUNT TO SAVE: " + amount);
+	
+	// cast reimbursement type to DB foreign key relationship
+	if (selectedType == "Lodging") {
+		selectedType = 1;
+	} else if (selectedType == "Travel") {
+		selectedType = 2;
+	} else if (selectedType == "Food") {
+		selectedType = 3;
+	} else {
+		selectedType = 4;
+	}
 	
 	var reimbRequest = sessionStorage.getItem('userReimb');
 	var reimbParse = JSON.parse(reimbRequest);
 	
-	reimbParse.reimbtype = selectedType;
-	reimbParse.reimbamount = amount;
-	reimbParse.reimbdisc = description;
+	reimbParse.type_id = selectedType;
+	reimbParse.amount = reimbamount;
+	reimbParse.description = reimbdesc;
 	
 	//JSON prepared for DB
 	reimbRequest = JSON.stringify(reimbParse);
 	console.log("OUT OF JSON: " + reimbRequest);
 	
 
-	if (isValidJSON(reimbRequest)){
+	if (isValidJson(reimbRequest)){
 
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
 			// get response body and console.login
 			if (xhr.readyState == 4 && xhr.status == 200) {
-				
-				xhr.open("POST", "sendreimb"); // request to SendReimb Servlet
-				xhr.setRequestHeader("Content-type", "application/json");
-				xhr.send(reimbRequest);
 			}
 		}
+		xhr.open("POST", "sendreimb"); // request to SendReimb Servlet
+		xhr.setRequestHeader("Content-type", "application/json");
+		xhr.send(reimbRequest);
 	} else {
 		$('#message').html('Please enter valid form data');
-
 	}
 }

@@ -20,8 +20,6 @@ public class SendReimbServlet extends HttpServlet {
 
 	private static Logger log = Logger.getLogger(SendReimbServlet.class);
 
-	// Make an instance of user service
-	static UserService service = new UserService();
 
 	/*
 	 * Take info from request, return user if logged in properly, return null if not
@@ -33,7 +31,7 @@ public class SendReimbServlet extends HttpServlet {
 		log.info("ARRIVED in sendReimb doPost");
 		ObjectMapper mapper = new ObjectMapper();
 		Reimbursement sendReimb = mapper.readValue(req.getInputStream(), Reimbursement.class);
-		log.info("ADDING Reimb: " + sendReimb.toString());
+		log.info("ADDING Reimb: " + sendReimb);
 
 		PrintWriter writer = resp.getWriter();
 		resp.setContentType("application/json");
