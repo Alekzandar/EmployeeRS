@@ -1,11 +1,37 @@
-<h1>Welcome, <span id = "role"><</span>
-<span id = "firstname"></span>  <span id = "lastname"></span>!</h1>
-<h4 id = "bio"></h4>
+<h1>
+	Welcome, <span id="role"><</span> <span id="firstname"></span> <span
+		id="lastname"></span>!
+</h1>
+<h4 id="bio"></h4>
 
-<h1>Submit a new Reimbursement Request!</h1>
+<h1>Submit a new Reimbursement Request Below</h1>
+<hr>
 
-<input type="text" id = "username" placeholder = "Username" class = "form-control col-6">
-<input type="text" id = "password" placeholder = "Password" class = "form-control col-6">
- <button class="btn btn-warning" id="login">Log in!</button>
- <span id = "message"></span>
+<div class="formgroup">
+	<label for="authorfirst">Author First Name</label>
+	<input type="text" id="authorfirst" class="form-control col-6" readonly> 
+	<label for="authorlast">Author Last Name</label> 
+	<input type="text"id="authorlast" class="form-control col-6" readonly>
+	 <small id="emailHelp" class="form-text text-muted">Pre-populated from User Profile.</small>
+</div>
+
+<div class="formgroup"> 
+	<label for = "amount">Reimbursement Amount</label>
+	<input type = "number" value = 100 min="0" max="10000" id = "amount" step="0.01" class="form-control col-6" required>
+	<label for = "description">Reimbursement Description</label>
+	<textarea class = "form-control" id = "description" class="form-control col-6" required></textarea>
+	<label for = "type">Reimbursement Type</label>
+	
+	<select class="selectpicker show-tick" id = "type" data-style="btn btn-info">
+		<option>Lodging</option>
+		<option>Travel</option>
+		<option>Food</option>
+		<option>Other</option>	
+	</select>
+</div>
+
+
+<button class="btn btn-warning" id="request" onclick = "sendReimb()">Submit Request</button>
+<span id = "message"></span>
+<hr>
 

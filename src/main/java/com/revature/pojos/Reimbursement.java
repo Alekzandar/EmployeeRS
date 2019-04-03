@@ -29,6 +29,7 @@ public class Reimbursement {
 	
 	/*
 	 * Reimbursement object constructor without id field
+	 * for displaying to User
 	 */
 	public Reimbursement(long amount, Timestamp submittedTime, Timestamp resolvedTime, String description, String author,
 			String resolver, String status, String type) {
@@ -49,6 +50,7 @@ public class Reimbursement {
 	
 	/*
 	 * Reimbursement object constructor with id field
+	 * for displaying to User
 	 */
 	public Reimbursement(int id, long amount, Timestamp submittedTime, Timestamp resolvedTime, String description,
 			String author, String resolver, String status, String type) {
@@ -65,6 +67,7 @@ public class Reimbursement {
 		this.status = status;
 		this.type = type;
 	}
+
 
 
 	public int getId() {

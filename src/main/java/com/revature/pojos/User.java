@@ -19,20 +19,6 @@ public class User {
 	
 	public User() {} //public no args constructor
 	
-	/*
-	 * User object construct without id field
-	 */
-	public User(String username, String password, String firstname, String lastname, String email, String role) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.email = email;
-		this.role = role;
-	}
-	
-	
 
 	/*
 	 * General User object constructor with id field
@@ -49,6 +35,10 @@ public class User {
 		this.role = role;
 	}
 
+
+	public int getId() {
+		return id;
+	}
 
 	public String getFirstname() {
 		return firstname;
