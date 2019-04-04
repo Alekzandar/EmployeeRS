@@ -285,13 +285,7 @@ function loadUserTable(user) {
 
 					var parseReimbs = JSON.parse(xhr.responseText);
 					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
-					drawTable(parseReimbs, userRole);
-					$('#request').on('click', function() {
-						sendReimb();
-						$("#userTable").empty();
-						loadUserTable(user);
-					});
-					
+					drawTable(parseReimbs, userRole);					
 				}
 			}
 			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
@@ -361,13 +355,13 @@ function drawManagerRow(rowData) {
 	var row = $("<tr />")
 	$("#userTable").append(row); // this will append tr element to table...
 	// keep its reference for a while since we
-	// will add cels into it
+	// will add cells into it
 	row.append($("<td>" + rowData.author + "</td>"));
 	row.append($("<td>" + rowData.type + "</td>"));
 	row.append($("<td>" + rowData.description + "</td>"));
 	row.append($("<td>" + rowData.amount + "</td>"));
 	row.append($("<td>" + rowData.resolver + "</td>"));
 	row.append($("<td>" + rowData.status + "</td>"));
-	row.append($("<td><button class='btn btn-success' id='approve' onclick='this.disabled=true;'>Approve</button>"
+	row.append($("<td>" + "<button class='btn btn-success' id='" + rowData.id +"' onclick='this.disabled=true;'>Approve</button>"
 			+ "<button class='btn btn-danger' id='deny' onclick='this.disabled=true;'>Deny</button></td>"));
 }
