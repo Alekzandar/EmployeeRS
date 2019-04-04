@@ -255,10 +255,14 @@ function loadUserTable(user) {
 			xhr.onreadystatechange = function() {
 				// get response body and console.login
 				if (xhr.readyState == 4 && xhr.status == 200) {
-					
+
 					var parseReimbs = JSON.parse(xhr.responseText);
 					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
-					drawTable(parseReimbs);
+					drawTable(parseReimbs, userRole);
+					$('#request').on('click', function() {
+						$("#userTable").empty();
+						loadUserTable(user);
+					});
 				}
 			}
 			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
@@ -275,20 +279,54 @@ function loadUserTable(user) {
 
 }
 
-function drawTable(data) {
-    for (var i = 0; i < data.length; i++) {
-    	console.log("DATA[i]: " + data[i]);
-        drawRow(data[i]);
-    }
-}
-function drawRow(rowData) {
-    var row = $("<tr />")
-    $("#userTable").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
-    row.append($("<td>" + rowData.id + "</td>"));
-    row.append($("<td>" + rowData.author + "</td>"));
-    row.append($("<td>" + rowData.type + "</td>"));
-    row.append($("<td>" + rowData.amount + "</td>"));
-    row.append($("<td>" + rowData.resolver + "</td>"));
-    row.append($("<td>" + rowData.status + "</td>"));
+function drawTableHeader() {
+	var header = $("<thead><tr>"
+			+ "<td><b>Author</b></td><td><b>Type</b></td><td><b>Description</b></td>"
+			+ "<td><b>Amount</b></td><td><b>Resolver</b></td><td><b>Status</b></td>"
+			+ "</tr></thead>")
+	$("#userTable").append(header);
 }
 
+/*
+ * Pair functions to generate Reimbursement Tables from JSON
+ */
+function drawTable(data, userRole) {
+	drawTableHeader();
+	if (userRole == "Employee") {
+		for (var i = 0; i < data.length; i++) {
+			console.log("DATA[i]: " + data[i]);
+			drawEmployeeRow(data[i]);
+		}
+	} else {
+		for (var i = 0; i < data.length; i++) {
+			console.log("DATA[i]: " + data[i]);
+			drawManagerRow(data[i]);
+		}
+	}
+}
+
+function drawEmployeeRow(rowData) {
+	var row = $("<tr />")
+	$("#userTable").append(row); // this will append tr element to table...
+	// keep its reference for a while since we
+	// will add cels into it
+	row.append($("<td>" + rowData.author + "</td>"));
+	row.append($("<td>" + rowData.type + "</td>"));
+	row.append($("<td>" + rowData.description + "</td>"));
+	row.append($("<td>" + rowData.amount + "</td>"));
+	row.append($("<td>" + rowData.resolver + "</td>"));
+	row.append($("<td>" + rowData.status + "</td>"));
+}
+
+function drawManagerRow(rowData) {
+	console.log("MANAGER TABLE DRAW");
+	var row = $("<tr />")
+	$("#userTable").append(row); // this will append tr element to table...
+	// keep its reference for a while since we
+	// will add cels into it
+	row.append($("<td>" + rowData.author + "</td>"));
+	row.append($("<td>" + rowData.type + "</td>"));
+	row.append($("<td>" + rowData.amount + "</td>"));
+	row.append($("<td>" + rowData.resolver + "</td>"));
+	row.append($("<td>" + rowData.status + "</td>"));
+}
