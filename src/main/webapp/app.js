@@ -338,6 +338,7 @@ function drawManagerTableHeader() {
 	var header = $("<thead><tr>"
 			+ "<td><b>Author</b></td><td><b>Type</b></td><td><b>Description</b></td>"
 			+ "<td><b>Amount</b></td><td><b>Resolver</b></td><td><b>Status</b></td>"
+			+ "<td><b>Selection</b></td>"
 			+ "</tr></thead>")
 	$("#userTable").append(header);
 }
@@ -367,4 +368,6 @@ function drawManagerRow(rowData) {
 	row.append($("<td>" + rowData.amount + "</td>"));
 	row.append($("<td>" + rowData.resolver + "</td>"));
 	row.append($("<td>" + rowData.status + "</td>"));
+	row.append($("<td><button class='btn btn-success' id='approve' onclick='this.disabled=true;'>Approve</button>"
+			+ "<button class='btn btn-danger' id='deny' onclick='this.disabled=true;'>Deny</button></td>"));
 }
