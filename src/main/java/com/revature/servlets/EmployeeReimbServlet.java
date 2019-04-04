@@ -26,17 +26,36 @@ public class EmployeeReimbServlet extends HttpServlet {
 	static ReimbursementService service = new ReimbursementService();
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		log.info("ARRIVED in empreimb doPost");
+		log.info("ARRIVED in empreimb Servlet doPost");
 		ObjectMapper mapper = new ObjectMapper();
 		User user = mapper.readValue(req.getInputStream(), User.class);
-		List<Reimbursement> reimbList = service.getUserReimbursement(user.getUsername());
+		log.info(user.getRole());
+		String role1 = "Employee";
+		if (user.getRole().equals(role1)) {
+			log.info("IN EMPLOYEE DOPOST TEMPLATE");
 
-		String out = "";
-		out = mapper.writeValueAsString(reimbList);
-		log.info("USER REIMB LIST: " + reimbList);
-		
-		PrintWriter writer = resp.getWriter();
-		resp.setContentType("application/json");
-		writer.write(out);
+			List<Reimbursement> reimbList = service.getUserReimbursement(user.getUsername());
+
+			String out = "";
+			out = mapper.writeValueAsString(reimbList);
+			log.info("USER REIMB LIST: " + reimbList);
+
+			PrintWriter writer = resp.getWriter();
+			resp.setContentType("application/json");
+			writer.write(out);
+		} else {
+			log.info("IN EMPLOYEE DOPOST TEMPLATE");
+
+			List<Reimbursement> reimbList = dao.getReimbursements();
+
+			String out = "";
+			out = mapper.writeValueAsString(reimbList);
+			log.info("USER REIMB LIST: " + reimbList);
+
+			PrintWriter writer = resp.getWriter();
+			resp.setContentType("application/json");
+			writer.write(out);
+
+		}
 	}
 }

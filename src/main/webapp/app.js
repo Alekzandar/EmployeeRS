@@ -277,11 +277,56 @@ function loadUserTable(user) {
 
 	} else {
 		console.log("IN MANAGER");
+		if (isValidJson(JSONUser)) {
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				// get response body and console.login
+				if (xhr.readyState == 4 && xhr.status == 200) {
+
+					var parseReimbs = JSON.parse(xhr.responseText);
+					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
+					drawTable(parseReimbs, userRole);
+					$('#request').on('click', function() {
+						sendReimb();
+						$("#userTable").empty();
+						loadUserTable(user);
+					});
+					
+				}
+			}
+			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
+			xhr.setRequestHeader("Content-type", "application/json");
+			xhr.send(JSONUser);
+		} else {
+			console.log("INVALID USER type")
+			return null;
+		}
+		
 	}
 
 }
 
-function drawTableHeader() {
+
+
+/*
+ * Pair functions to generate Reimbursement Tables from JSON
+ */
+function drawTable(data, userRole) {
+	if (userRole == "Employee") {
+		drawEmpTableHeader();
+		for (var i = 0; i < data.length; i++) {
+			console.log("DATA[i]: " + data[i]);
+			drawEmployeeRow(data[i]);
+		}
+	} else {
+		drawManagerTableHeader();
+		for (var i = 0; i < data.length; i++) {
+			console.log("DATA[i]: " + data[i]);
+			drawManagerRow(data[i]);
+		}
+	}
+}
+function drawEmpTableHeader() {
 	var header = $("<thead><tr>"
 			+ "<td><b>Author</b></td><td><b>Type</b></td><td><b>Description</b></td>"
 			+ "<td><b>Amount</b></td><td><b>Resolver</b></td><td><b>Status</b></td>"
@@ -289,22 +334,12 @@ function drawTableHeader() {
 	$("#userTable").append(header);
 }
 
-/*
- * Pair functions to generate Reimbursement Tables from JSON
- */
-function drawTable(data, userRole) {
-	drawTableHeader();
-	if (userRole == "Employee") {
-		for (var i = 0; i < data.length; i++) {
-			console.log("DATA[i]: " + data[i]);
-			drawEmployeeRow(data[i]);
-		}
-	} else {
-		for (var i = 0; i < data.length; i++) {
-			console.log("DATA[i]: " + data[i]);
-			drawManagerRow(data[i]);
-		}
-	}
+function drawManagerTableHeader() {
+	var header = $("<thead><tr>"
+			+ "<td><b>Author</b></td><td><b>Type</b></td><td><b>Description</b></td>"
+			+ "<td><b>Amount</b></td><td><b>Resolver</b></td><td><b>Status</b></td>"
+			+ "</tr></thead>")
+	$("#userTable").append(header);
 }
 
 function drawEmployeeRow(rowData) {
@@ -328,6 +363,7 @@ function drawManagerRow(rowData) {
 	// will add cels into it
 	row.append($("<td>" + rowData.author + "</td>"));
 	row.append($("<td>" + rowData.type + "</td>"));
+	row.append($("<td>" + rowData.description + "</td>"));
 	row.append($("<td>" + rowData.amount + "</td>"));
 	row.append($("<td>" + rowData.resolver + "</td>"));
 	row.append($("<td>" + rowData.status + "</td>"));
