@@ -130,8 +130,6 @@ public class ReimbursementDAO {
 					"VALUES(?, ?, ?, ?, ?, ?)";
 			String[] keyNames = {"REIMB_ID"}; 				//list of auto-generated keys, specify column names
 			
-			int reimb_author, reimb_resolver, reimb_status_id, reimb_type_id;
-			
 			
 			PreparedStatement ps = conn.prepareStatement(sql, keyNames);				
 														
@@ -152,6 +150,53 @@ public class ReimbursementDAO {
 				pk.next();
 				reimb.setId(pk.getInt(1));
 			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/*
+	 * Approve a reimbursement for given user ID
+	 */
+	public void approveReimbursement(int reimbID) {
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			//conn.setAutoCommit(); is set to true
+			
+			String sql = "UPDATE ERS_REIMBURSEMENT\r\n" + 
+					"SET REIMB_STATUS_ID = 2\r\n" + 
+					"WHERE REIMB_ID = ?";
+						
+			PreparedStatement ps = conn.prepareStatement(sql);				
+														
+			ps.setInt(1, reimbID);	
+
+			int numRowsAffected = ps.executeUpdate(); //don't need to set the executeUpdate to anything unless using num rows affected
+			
+			System.out.println("APPROVED" + numRowsAffected + " Reimbursements IN DB");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * Deny a reimbursement request for given user ID
+	 */
+	public void denyReimbursement(int reimbID) {
+		try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+			//conn.setAutoCommit(); is set to true
+			
+			String sql = "UPDATE ERS_REIMBURSEMENT\r\n" + 
+					"SET REIMB_STATUS_ID = 3\r\n" + 
+					"WHERE REIMB_ID = ?";
+						
+			PreparedStatement ps = conn.prepareStatement(sql);				
+														
+			ps.setInt(1, reimbID);	
+
+			int numRowsAffected = ps.executeUpdate(); //don't need to set the executeUpdate to anything unless using num rows affected
+			
+			System.out.println("DENIED" + numRowsAffected + " Reimbursements IN DB");
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

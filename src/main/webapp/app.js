@@ -247,18 +247,21 @@ function loadUserTable(user) {
 	let parseUser = JSON.parse(JSONUser);
 	console.log("TESTUSER: " + JSONUser);
 	let userRole = user.role;
+	let userID = user.id;
+
 
 	if (userRole == "Employee") {
 		if (isValidJson(JSONUser)) {
 			console.log("IN EMPLOYEE");
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
-				// get response body and console.login
 				if (xhr.readyState == 4 && xhr.status == 200) {
 
 					var parseReimbs = JSON.parse(xhr.responseText);
 					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
 					drawTable(parseReimbs, userRole);
+					
+					//Send Request and reload table entity
 					$('#request').on('click', function() {
 						sendReimb();
 						$("#userTable").empty();
@@ -280,12 +283,19 @@ function loadUserTable(user) {
 		if (isValidJson(JSONUser)) {
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
-				// get response body and console.login
 				if (xhr.readyState == 4 && xhr.status == 200) {
 
 					var parseReimbs = JSON.parse(xhr.responseText);
-					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
-					drawTable(parseReimbs, userRole);					
+					console.log("TABLE REIMB ID: " + parseReimbs[1].id);
+					drawTable(parseReimbs, userRole);	
+					$('button[name=process]').on('click', function(){
+						let buttonReimbID = $(this).attr('id'); //Corresponds to User ID for that field
+						let buttonType = $(this).attr('buttonType');
+						processReimb(buttonReimbID, buttonType);
+						$("#userTable").empty();
+						loadUserTable(user);
+					});
+							
 				}
 			}
 			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
@@ -300,6 +310,24 @@ function loadUserTable(user) {
 
 }
 
+
+/*
+ * Process 
+ */
+function processReimb(buttonReimbID, buttonType){
+	//grouping necessary data as string for servlet
+	let requestBody = buttonReimbID + buttonType
+	console.log(requestBody);
+	
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+			}
+		}
+		xhr.open("POST", "processreimb"); // request to SendReimb Servlet
+		xhr.setRequestHeader("Content-type", "text-plain");
+		xhr.send(requestBody);
+}
 
 
 /*
@@ -351,7 +379,7 @@ function drawEmployeeRow(rowData) {
 }
 
 function drawManagerRow(rowData) {
-	console.log("MANAGER TABLE DRAW");
+	//console.log("MANAGER TABLE DRAW");
 	var row = $("<tr />")
 	$("#userTable").append(row); // this will append tr element to table...
 	// keep its reference for a while since we
@@ -362,6 +390,6 @@ function drawManagerRow(rowData) {
 	row.append($("<td>" + rowData.amount + "</td>"));
 	row.append($("<td>" + rowData.resolver + "</td>"));
 	row.append($("<td>" + rowData.status + "</td>"));
-	row.append($("<td>" + "<button class='btn btn-success' id='" + rowData.id +"' onclick='this.disabled=true;'>Approve</button>"
-			+ "<button class='btn btn-danger' id='deny' onclick='this.disabled=true;'>Deny</button></td>"));
+	row.append($("<td>" + "<button class='btn btn-success' name = 'process' id='" + rowData.id +"' buttonType = 'approve' onclick='this.disabled=true;'>Approve</button>"
+			+ "<button class='btn btn-danger' name = 'process' id='" + rowData.id + "' buttonType = 'deny' onclick='this.disabled=true;'>Deny</button></td>"));
 }

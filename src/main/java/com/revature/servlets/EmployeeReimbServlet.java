@@ -44,7 +44,7 @@ public class EmployeeReimbServlet extends HttpServlet {
 			resp.setContentType("application/json");
 			writer.write(out);
 		} else {
-			log.info("IN EMPLOYEE DOPOST TEMPLATE");
+			log.info("IN EMPLOYEE DO POST TEMPLATE");
 
 			List<Reimbursement> reimbList = dao.getReimbursements();
 
