@@ -3,7 +3,10 @@
  */
 package com.revature.service;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.revature.data.ReimbursementDAO;
 import com.revature.pojos.Reimbursement;
@@ -19,7 +22,7 @@ public class ReimbursementService {
 	static ReimbursementDAO dao = new ReimbursementDAO();
 	
 	/*
-	 * Retrieve reimbursement from User
+	 * Retrieve Reimbursements submitted by given User
 	 */
 	public List<Reimbursement> getUserReimbursement(String username){
 		List<Reimbursement> r = dao.getByUsername(username);

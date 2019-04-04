@@ -2,6 +2,7 @@ package com.revature.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,28 +16,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.data.ReimbursementDAO;
 import com.revature.pojos.Reimbursement;
 import com.revature.pojos.User;
+import com.revature.service.ReimbursementService;
 
-@WebServlet("/sendreimb")
-public class SendReimbServlet extends HttpServlet {
+@WebServlet("/empreimb")
+public class EmployeeReimbServlet extends HttpServlet {
 
+	private static Logger log = Logger.getLogger(EmployeeReimbServlet.class);
 	static ReimbursementDAO dao = new ReimbursementDAO();
-	private static Logger log = Logger.getLogger(SendReimbServlet.class);
+	static ReimbursementService service = new ReimbursementService();
 
-	
-	/*
-	 * Take info from request, return user if logged in properly, return null if not
-	 * proper
-	 */
-	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		log.info("ARRIVED in sendReimb doPost");
+		log.info("ARRIVED in empreimb doPost");
 		ObjectMapper mapper = new ObjectMapper();
-		Reimbursement reimbRequest = mapper.readValue(req.getInputStream(), Reimbursement.class);
-		log.info("ADDING Reimb: " + reimbRequest);
+		User user = mapper.readValue(req.getInputStream(), User.class);
+		List<Reimbursement> reimbList = service.getUserReimbursement(user.getUsername());
 
-		dao.addReimbursement(reimbRequest);
-
+		String out = "";
+		out = mapper.writeValueAsString(reimbList);
+		log.info("USER REIMB LIST: " + reimbList);
+		
+		PrintWriter writer = resp.getWriter();
+		resp.setContentType("application/json");
+		writer.write(out);
 	}
-	
 }

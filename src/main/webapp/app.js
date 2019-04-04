@@ -66,7 +66,8 @@ function loginUser() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				var user = JSON.parse(xhr.responseText); // turn user JSON to
 				// object
-				console.log(xhr.getAllResponseHeaders());
+				console.log("LOGIN RESPONSE HEADERS"
+						+ xhr.getAllResponseHeaders());
 				if (user == null) {
 					// not logged in -- inform about invalid credentials
 					$('#message').html('Sorry! Invalid credentials');
@@ -112,8 +113,9 @@ function loadEmployeeView(user) {
 
 			if (xhr.status == 200) {
 				$('#view').html(xhr.responseText);
-				// console.log("ready state");
 
+				// Binding the below to the html loaded through the response
+				// text
 
 				$('#firstname').html(user.firstname);
 				$('#lastname').html(user.lastname);
@@ -121,6 +123,8 @@ function loadEmployeeView(user) {
 				$('#authorfirst').val(user.firstname);
 				$('#authorlast').val(user.lastname);
 				$('#request').on('load', stageUser(user));
+
+				loadUserTable(user);
 			} else if (xhr.status == 404) {
 				console.error(xhr.responseText);
 			}
@@ -138,9 +142,6 @@ function loadEmployeeView(user) {
 	}
 }
 
-function storeUser(user) {
-
-}
 /*
  * Gather field data, format into Reimbursement request, add request to DB
  */
@@ -172,39 +173,37 @@ function stageUser(user) {
 		author_id : id,
 		resolver_id : 2, // default resolver, overwritten when resolved
 		status_id : 1, // pending
-		type_id: selectedType
+		type_id : selectedType
 	};
 	var reimbObj = JSON.stringify(reimbursement);
 	console.log("Reimbursement Object: " + reimbObj);
-	
-	//stage for user in overwriting parameters and submitting to DB
+
+	// stage for user in overwriting parameters and submitting to DB
 	sessionStorage.setItem('userReimb', reimbObj);
 }
-
 
 /*
  * Validate JSON
  */
 function isValidJson(json) {
-    try {
-        JSON.parse(json);
-        return true;
-    } catch (e) {
-        return false;
-    }
+	try {
+		JSON.parse(json);
+		return true;
+	} catch (e) {
+		return false;
+	}
 }
 
-
-
 /*
- * Function to retrieve staged reimbursement request on click and send HTTP POST request
+ * Function to retrieve staged reimbursement request on click and send HTTP POST
+ * request
  */
 function sendReimb() {
 	var selectedType = $('#type').children("option:selected").val();
 	var reimbdesc = $('#description').val();
 	var reimbamount = $('#amount').val();
-	console.log("AMOUNT TO SAVE: " + amount);
-	
+	// console.log("AMOUNT TO SAVE: " + amount);
+
 	// cast reimbursement type to DB foreign key relationship
 	if (selectedType == "Lodging") {
 		selectedType = 1;
@@ -215,20 +214,19 @@ function sendReimb() {
 	} else {
 		selectedType = 4;
 	}
-	
+
 	var reimbRequest = sessionStorage.getItem('userReimb');
 	var reimbParse = JSON.parse(reimbRequest);
-	
+
 	reimbParse.type_id = selectedType;
 	reimbParse.amount = reimbamount;
 	reimbParse.description = reimbdesc;
-	
-	//JSON prepared for DB
+
+	// JSON prepared for DB
 	reimbRequest = JSON.stringify(reimbParse);
 	console.log("OUT OF JSON: " + reimbRequest);
-	
 
-	if (isValidJson(reimbRequest)){
+	if (isValidJson(reimbRequest)) {
 
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
@@ -243,3 +241,54 @@ function sendReimb() {
 		$('#message').html('Please enter valid form data');
 	}
 }
+
+function loadUserTable(user) {
+	JSONUser = JSON.stringify(user);
+	let parseUser = JSON.parse(JSONUser);
+	console.log("TESTUSER: " + JSONUser);
+	let userRole = user.role;
+
+	if (userRole == "Employee") {
+		if (isValidJson(JSONUser)) {
+			console.log("IN EMPLOYEE");
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				// get response body and console.login
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					
+					var parseReimbs = JSON.parse(xhr.responseText);
+					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
+					drawTable(parseReimbs);
+				}
+			}
+			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
+			xhr.setRequestHeader("Content-type", "application/json");
+			xhr.send(JSONUser);
+		} else {
+			console.log("INVALID USER type")
+			return null;
+		}
+
+	} else {
+		console.log("IN MANAGER");
+	}
+
+}
+
+function drawTable(data) {
+    for (var i = 0; i < data.length; i++) {
+    	console.log("DATA[i]: " + data[i]);
+        drawRow(data[i]);
+    }
+}
+function drawRow(rowData) {
+    var row = $("<tr />")
+    $("#userTable").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
+    row.append($("<td>" + rowData.id + "</td>"));
+    row.append($("<td>" + rowData.author + "</td>"));
+    row.append($("<td>" + rowData.type + "</td>"));
+    row.append($("<td>" + rowData.amount + "</td>"));
+    row.append($("<td>" + rowData.resolver + "</td>"));
+    row.append($("<td>" + rowData.status + "</td>"));
+}
+

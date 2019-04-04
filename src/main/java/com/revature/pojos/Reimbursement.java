@@ -72,7 +72,6 @@ public class Reimbursement {
 	 * DB Storage Reimbursement Constructor
 	 */
 	public Reimbursement(long amount, String description, int author_id, int resolver_id, int status_id, int type_id) {
-		super();
 		this.amount = amount;
 		this.description = description;
 		this.author_id = author_id;

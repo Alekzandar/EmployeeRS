@@ -1,5 +1,7 @@
 package com.revature.data;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,8 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.revature.pojos.Reimbursement;
-import com.revature.pojos.TestUser;
 import com.revature.util.ConnectionFactory;
 
 /*
@@ -73,7 +76,7 @@ public class ReimbursementDAO {
 	/*
 	 * Get Reimbursements from a specific username
 	 */
-	public List<Reimbursement> getByUsername(String username) {
+	public List<Reimbursement> getByUsername(String username)  {
 		List<Reimbursement> reimb = new ArrayList<Reimbursement>();
 		Reimbursement r = null;
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){  		
@@ -94,9 +97,9 @@ public class ReimbursementDAO {
 			ps.setString(1,  username.toLowerCase());
 			ResultSet rs = ps.executeQuery(); 		
 			
-				
 			while(rs.next()) { 			
 				Reimbursement temp = new Reimbursement(
+						
 							rs.getInt(1), 
 							rs.getLong(2), 
 							rs.getTimestamp(3),
