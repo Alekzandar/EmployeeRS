@@ -260,9 +260,11 @@ function loadUserTable(user) {
 					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
 					drawTable(parseReimbs, userRole);
 					$('#request').on('click', function() {
+						sendReimb();
 						$("#userTable").empty();
 						loadUserTable(user);
 					});
+					
 				}
 			}
 			xhr.open("POST", "empreimb"); // request to SendReimb Servlet

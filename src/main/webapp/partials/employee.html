@@ -34,15 +34,13 @@
 
 
 <button class="btn btn-warning" id="request"
-	onclick="sendReimb(); this.disabled=true;">Submit Request</button>
+	onclick="this.disabled=true;">Submit Request</button>
 <span id="message"></span>
 <hr>
 
 <h1>Your Reimbursement Requests:</h1>
 <table class="table table-bordered" id="userTable">
 </table>
-<button class="btn btn-warning" id="refresh" >Refresh
-	Table</button>
 <!-- 
 public Reimbursement(int id, long amount, Timestamp submittedTime, Timestamp resolvedTime, String description,
 			String author, String resolver, String status, String type)  -->
