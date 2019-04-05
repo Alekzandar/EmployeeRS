@@ -19,7 +19,9 @@
 <div class="formgroup">
 	<label for="amount">Reimbursement Amount</label> <input type="number"
 		value=100 min="0" max="10000" id="amount" step="0.01"
-		class="form-control col-6" required> <label for="description">Reimbursement
+		class="form-control col-6" required> <span id="message"></span>
+		<br>
+		<label for="description">Reimbursement
 		Description</label>
 	<textarea class="form-control" id="description"
 		class="form-control col-6" required></textarea>
@@ -33,15 +35,16 @@
 </div>
 
 
-<button class="btn btn-warning" id="request"
-	onclick="this.disabled=true;">Submit Request</button>
+<button class="btn btn-info" id="request" >Submit Request</button>
+
+<button class="btn btn-warning" id="logout">Log Out</button>
 <span id="message"></span>
 <hr>
 
 <h1>Your Reimbursement Requests:</h1>
 <table class="table table-bordered" id="userTable">
 </table>
-<!-- 
-public Reimbursement(int id, long amount, Timestamp submittedTime, Timestamp resolvedTime, String description,
-			String author, String resolver, String status, String type)  -->
+
+<button class="btn btn-success" id="refresh">Refresh Table</button>
+
 

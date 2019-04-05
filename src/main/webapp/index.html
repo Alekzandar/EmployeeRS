@@ -4,28 +4,125 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Demo App</title>
+	<title>Demo App</title> <!-- Personal Stylesheet -->
+	<link rel="stylesheet" href="./index.css" type="text/css">
 
-<!--  Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-	crossorigin="anonymous"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-	crossorigin="anonymous"></script>
+		<!--  Bootstrap CSS -->
+	<link rel="stylesheet"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+		crossorigin="anonymous">
+
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+			integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+			crossorigin="anonymous"></script>
 </head>
 
 <body>
-<!--  Using partials (partial HTML) we will replace our HTML with JS -->
-	<div id="view" align = "center"></div> <!--  something to replace the inner html -->
+	<!--  Using partials (partial HTML) we will replace our HTML with JS -->
+	<div id="view" align="center"></div>
+	<!--  something to replace the inner html -->
 	<script src="app.js" type="text/javascript"></script>
 
+
+	<style>
+body {
+	color: #000000;
+	background-color: azure;
+	font-family: "Poppins", sans-serif;
+}
+
+label {
+	font-size: 20px;
+	border-radius: 5px;
+	background-color: #ff9b00;
+}
+
+h2 {
+	color: white;
+	border: 3px solid #ccc;
+}
+
+h3 {
+	margin-top: 40px;
+	margin-bottom: 10px;
+	border: 3px solid #ccc;
+}
+
+.container {
+	border-radius: 5px;
+	background-color: #ff9b00;
+	padding: 5px;
+}
+
+#login {
+	margin-top: 20px;
+}
+
+#message {
+	color: #ff0000;
+}
+
+table {
+	background-color: #D3D3D3;
+}
+
+.form-control {
+	min-height: 41px;
+	background: #fff;
+	box-shadow: none !important;
+	border-color: #e3e3e3;
+}
+
+.form-control:focus {
+	border-color: #70c5c0;
+}
+
+.form-control, .btn {
+	border-radius: 2px;
+}
+
+.login-form {
+	width: 350px;
+	margin: 0 auto;
+	padding: 100px 0 30px;
+}
+
+.login-form form {
+	color: #7a7a7a;
+	border-radius: 2px;
+	margin-bottom: 15px;
+	font-size: 13px;
+	background: #ececec;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 30px;
+	position: relative;
+}
+
+.login-form h2 {
+	font-size: 22px;
+	margin: 35px 0 25px;
+}
+
+.login-form .btn {
+	font-size: 16px;
+	font-weight: bold;
+	background: #70c5c0;
+	border: none;
+	margin-bottom: 20px;
+}
+
+.login-form .btn:hover, .login-form .btn:focus {
+	background: #50b8b3;
+	outline: none !important;
+}
+</style>
 </body>
 </html>
+

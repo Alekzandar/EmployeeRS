@@ -249,7 +249,6 @@ function loadUserTable(user) {
 	let userRole = user.role;
 	let userID = user.id;
 
-
 	if (userRole == "Employee") {
 		if (isValidJson(JSONUser)) {
 			console.log("IN EMPLOYEE");
@@ -260,14 +259,24 @@ function loadUserTable(user) {
 					var parseReimbs = JSON.parse(xhr.responseText);
 					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
 					drawTable(parseReimbs, userRole);
-					
-					//Send Request and reload table entity
+
+					// Send Request and reload table entity
 					$('#request').on('click', function() {
-						sendReimb();
-						$("#userTable").empty();
-						loadUserTable(user);
+						if(formValid() == true){
+							sendReimb();
+							$('#request').hide();
+							$("#userTable").empty();
+							loadUserTable(user);
+						}
 					});
-					
+					$('#logout').on('click', function() {
+						logOut();
+					});
+					$('#refresh').on('click', function() {
+						$("#userTable").empty();
+						setTimeout(loadUserTable(user), 1500);
+					});
+
 				}
 			}
 			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
@@ -287,15 +296,25 @@ function loadUserTable(user) {
 
 					var parseReimbs = JSON.parse(xhr.responseText);
 					console.log("TABLE REIMB ID: " + parseReimbs[1].id);
-					drawTable(parseReimbs, userRole);	
-					$('button[name=process]').on('click', function(){
-						let buttonReimbID = $(this).attr('id'); //Corresponds to User ID for that field
+					drawTable(parseReimbs, userRole);
+					$('button[name=process]').on('click', function() {
+						let buttonReimbID = $(this).attr('id'); // Corresponds
+																// to User ID
+																// for that
+																// field
 						let buttonType = $(this).attr('buttonType');
 						processReimb(buttonReimbID, buttonType);
 						$("#userTable").empty();
 						loadUserTable(user);
 					});
-							
+					$('#logout').on('click', function() {
+						logOut();
+					});
+					$('#refresh').on('click', function() {
+						$("#userTable").empty();
+						setTimeout(loadUserTable(user), 1500);
+					});
+
 				}
 			}
 			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
@@ -305,30 +324,72 @@ function loadUserTable(user) {
 			console.log("INVALID USER type")
 			return null;
 		}
-		
+
 	}
 
 }
 
-
 /*
- * Process 
+ * Process Reimbursement Request by User
  */
-function processReimb(buttonReimbID, buttonType){
-	//grouping necessary data as string for servlet
+function processReimb(buttonReimbID, buttonType) {
+	// grouping necessary data as string for servlet
 	let requestBody = buttonReimbID + buttonType
 	console.log(requestBody);
-	
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-			}
+
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
 		}
-		xhr.open("POST", "processreimb"); // request to SendReimb Servlet
-		xhr.setRequestHeader("Content-type", "text-plain");
-		xhr.send(requestBody);
+	}
+	xhr.open("POST", "processreimb"); // request to SendReimb Servlet
+	xhr.setRequestHeader("Content-type", "text-plain");
+	xhr.send(requestBody);
 }
 
+/*
+ * Send a request to log out the user and redirect back to the landing view
+ */
+function logOut() {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+
+		if (xhr.readyState == 4) {
+			console.log('Log Out response received');
+			if (xhr.status == 200) {
+
+				$('#view').html(xhr.responseText);
+
+				$('#login').on('click', loginUser);
+
+			}
+			if (xhr.status > 399) {
+				// some sort of error
+			}
+		}
+	}
+
+	xhr.open("GET", "landing.view");
+	console.log("Landing XHR open");
+
+	xhr.send();
+}
+
+/*
+ * Form Validation for submit request
+ */
+function formValid() {
+	var num = Number(document.getElementById("amount").value);
+	console.log("INPUT NUM IS: " + num + " TYPE: " + typeof num);
+
+	if (num > 10 && typeof (num) == 'number' && num < 10001) {
+		console.log("VALID AMOUNT");
+		return true;
+	} else {
+		document.getElementById("message").innerHTML = "Amount is Invalid: Number Between $10 and $10000";
+		return false;
+	}
+}
 
 /*
  * Pair functions to generate Reimbursement Tables from JSON
@@ -349,18 +410,18 @@ function drawTable(data, userRole) {
 	}
 }
 function drawEmpTableHeader() {
-	var header = $("<thead><tr>"
+	var header = $("<thead class='thead-dark'><tr>"
 			+ "<td><b>Author</b></td><td><b>Type</b></td><td><b>Description</b></td>"
-			+ "<td><b>Amount</b></td><td><b>Resolver</b></td><td><b>Status</b></td>"
-			+ "</tr></thead>")
+			+ "<td><b>Amount</b></td><td><b>Resolver</b></td><td><b>Sbumitted Time</b></td>"
+			+ "<td><b>Status</b></td>" + "</tr></thead>")
 	$("#userTable").append(header);
 }
 
 function drawManagerTableHeader() {
-	var header = $("<thead><tr>"
+	var header = $("<thead class='thead-dark'><tr>"
 			+ "<td><b>Author</b></td><td><b>Type</b></td><td><b>Description</b></td>"
 			+ "<td><b>Amount</b></td><td><b>Resolver</b></td><td><b>Status</b></td>"
-			+ "<td><b>Selection</b></td>"
+			+ "<td><b>Resolved Time</b></td>" + "<td><b>Selection</b></td>"
 			+ "</tr></thead>")
 	$("#userTable").append(header);
 }
@@ -375,11 +436,12 @@ function drawEmployeeRow(rowData) {
 	row.append($("<td>" + rowData.description + "</td>"));
 	row.append($("<td>" + rowData.amount + "</td>"));
 	row.append($("<td>" + rowData.resolver + "</td>"));
+	row.append($("<td>" + rowData.submittedTime + "</td>"));
 	row.append($("<td>" + rowData.status + "</td>"));
 }
 
 function drawManagerRow(rowData) {
-	//console.log("MANAGER TABLE DRAW");
+	// console.log("MANAGER TABLE DRAW");
 	var row = $("<tr />")
 	$("#userTable").append(row); // this will append tr element to table...
 	// keep its reference for a while since we
@@ -390,6 +452,14 @@ function drawManagerRow(rowData) {
 	row.append($("<td>" + rowData.amount + "</td>"));
 	row.append($("<td>" + rowData.resolver + "</td>"));
 	row.append($("<td>" + rowData.status + "</td>"));
-	row.append($("<td>" + "<button class='btn btn-success' name = 'process' id='" + rowData.id +"' buttonType = 'approve' onclick='this.disabled=true;'>Approve</button>"
-			+ "<button class='btn btn-danger' name = 'process' id='" + rowData.id + "' buttonType = 'deny' onclick='this.disabled=true;'>Deny</button></td>"));
+	row.append($("<td>" + rowData.resolvedTime + "</td>"));
+
+	row
+			.append($("<td>"
+					+ "<button class='btn btn-success' name = 'process' id='"
+					+ rowData.id
+					+ "' buttonType = 'approve' onclick='this.disabled=true;'>Approve</button>"
+					+ "<button class='btn btn-danger' name = 'process' id='"
+					+ rowData.id
+					+ "' buttonType = 'deny' onclick='this.disabled=true;'>Deny</button></td>"));
 }
