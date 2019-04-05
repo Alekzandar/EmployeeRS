@@ -1,3 +1,5 @@
+var viewCounter = 1;
+
 /*
  * Intialize our partial landingview 
  */
@@ -171,7 +173,7 @@ function stageUser(user) {
 		amount : reimbamount,
 		description : reimbdesc,
 		author_id : id,
-		resolver_id : 2, // default resolver, overwritten when resolved
+		resolver_id : 50, // default resolver, overwritten when resolved
 		status_id : 1, // pending
 		type_id : selectedType
 	};
@@ -248,6 +250,7 @@ function loadUserTable(user) {
 	console.log("TESTUSER: " + JSONUser);
 	let userRole = user.role;
 	let userID = user.id;
+	console.log("LOADING TABLE FOR USER ID: " + userID);
 
 	if (userRole == "Employee") {
 		if (isValidJson(JSONUser)) {
@@ -257,16 +260,19 @@ function loadUserTable(user) {
 				if (xhr.readyState == 4 && xhr.status == 200) {
 
 					var parseReimbs = JSON.parse(xhr.responseText);
-					console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
-					drawTable(parseReimbs, userRole);
+					//console.log("TABLE REIMB AMOUNT: " + parseReimbs[1].amount);
+					if(viewCounter==1){
+						drawTable(parseReimbs, userRole);
+						++viewCounter;
+					}
 
-					// Send Request and reload table entity
+					// Send Request / Validate Form / Reload Table Element
 					$('#request').on('click', function() {
 						if(formValid() == true){
 							sendReimb();
 							$('#request').hide();
 							$("#userTable").empty();
-							loadUserTable(user);
+							setTimeout(loadUserTable(user), 1000);
 						}
 					});
 					$('#logout').on('click', function() {
@@ -274,9 +280,11 @@ function loadUserTable(user) {
 					});
 					$('#refresh').on('click', function() {
 						$("#userTable").empty();
-						setTimeout(loadUserTable(user), 1500);
+						viewCounter=1; 
+						setTimeout(loadUserTable(user), 1000);
 					});
-
+					
+					
 				}
 			}
 			xhr.open("POST", "empreimb"); // request to SendReimb Servlet
@@ -296,7 +304,10 @@ function loadUserTable(user) {
 
 					var parseReimbs = JSON.parse(xhr.responseText);
 					console.log("TABLE REIMB ID: " + parseReimbs[1].id);
-					drawTable(parseReimbs, userRole);
+					if(viewCounter==1){
+						drawTable(parseReimbs, userRole);
+						++viewCounter;
+					}
 					$('button[name=process]').on('click', function() {
 						let buttonReimbID = $(this).attr('id'); // Corresponds
 																// to User ID
@@ -305,14 +316,15 @@ function loadUserTable(user) {
 						let buttonType = $(this).attr('buttonType');
 						processReimb(buttonReimbID, buttonType);
 						$("#userTable").empty();
-						loadUserTable(user);
+						setTimeout(loadUserTable(user), 1000);
 					});
 					$('#logout').on('click', function() {
 						logOut();
 					});
 					$('#refresh').on('click', function() {
 						$("#userTable").empty();
-						setTimeout(loadUserTable(user), 1500);
+						viewCounter=1; 
+						setTimeout(loadUserTable(user), 1000);
 					});
 
 				}
@@ -395,6 +407,7 @@ function formValid() {
  * Pair functions to generate Reimbursement Tables from JSON
  */
 function drawTable(data, userRole) {
+	console.log("DRAWING TABLE");
 	if (userRole == "Employee") {
 		drawEmpTableHeader();
 		for (var i = 0; i < data.length; i++) {
@@ -454,8 +467,7 @@ function drawManagerRow(rowData) {
 	row.append($("<td>" + rowData.status + "</td>"));
 	row.append($("<td>" + rowData.resolvedTime + "</td>"));
 
-	row
-			.append($("<td>"
+	row.append($("<td>"
 					+ "<button class='btn btn-success' name = 'process' id='"
 					+ rowData.id
 					+ "' buttonType = 'approve' onclick='this.disabled=true;'>Approve</button>"

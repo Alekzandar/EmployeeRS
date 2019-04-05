@@ -34,6 +34,7 @@ public class EmployeeReimbServlet extends HttpServlet {
 		if (user.getRole().equals(role1)) {
 			log.info("IN EMPLOYEE DOPOST TEMPLATE");
 
+			log.info(user.getUsername());
 			List<Reimbursement> reimbList = service.getUserReimbursement(user.getUsername());
 
 			String out = "";
@@ -44,13 +45,13 @@ public class EmployeeReimbServlet extends HttpServlet {
 			resp.setContentType("application/json");
 			writer.write(out);
 		} else {
-			log.info("IN EMPLOYEE DO POST TEMPLATE");
+			log.info("IN MANAGER DO POST TEMPLATE");
 
 			List<Reimbursement> reimbList = dao.getReimbursements();
 
 			String out = "";
 			out = mapper.writeValueAsString(reimbList);
-			log.info("USER REIMB LIST: " + reimbList);
+			log.info("MANAGER REIMB LIST: " + reimbList);
 
 			PrintWriter writer = resp.getWriter();
 			resp.setContentType("application/json");

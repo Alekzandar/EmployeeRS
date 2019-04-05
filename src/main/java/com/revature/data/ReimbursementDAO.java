@@ -12,14 +12,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.revature.pojos.Reimbursement;
+import com.revature.servlets.ProcessReimbServlet;
 import com.revature.util.ConnectionFactory;
 
 /*
  * Data Access Object for generating Reimbursements from our DB Connection
  */
 public class ReimbursementDAO {
-
+	private static Logger log = Logger.getLogger(ReimbursementDAO.class);
 	
 	
 	/*
@@ -92,7 +95,7 @@ public class ReimbursementDAO {
 					"WHERE U1.ERS_USERNAME = ? \r\n" + 
 					"ORDER BY REIMB_ID";
 												
-			
+			log.info("GETTING REIMBURSEMENT FOR USERNAME: " + username);
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1,  username.toLowerCase());
 			ResultSet rs = ps.executeQuery(); 		
@@ -110,7 +113,7 @@ public class ReimbursementDAO {
 							rs.getString(8), 
 							rs.getString(9));
 				reimb.add(temp);
-				//System.out.println("Test" + temp);
+				log.info("Test" + temp);
 			}	
 		} catch (SQLException e) {
 			e.printStackTrace();
