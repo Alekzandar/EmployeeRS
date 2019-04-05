@@ -1,3 +1,4 @@
+//global to manage view refresh
 var viewCounter = 1;
 
 /*
@@ -314,8 +315,9 @@ function loadUserTable(user) {
 																// for that
 																// field
 						let buttonType = $(this).attr('buttonType');
-						processReimb(buttonReimbID, buttonType);
+						processReimb(user, buttonReimbID, buttonType);
 						$("#userTable").empty();
+						viewCounter = 1;
 						setTimeout(loadUserTable(user), 1000);
 					});
 					$('#logout').on('click', function() {
@@ -344,9 +346,10 @@ function loadUserTable(user) {
 /*
  * Process Reimbursement Request by User
  */
-function processReimb(buttonReimbID, buttonType) {
+function processReimb(user, buttonReimbID, buttonType) {
 	// grouping necessary data as string for servlet
 	let requestBody = buttonReimbID + buttonType
+	console.log("PROCESSING REQUEST BY: " +  user.id);
 	console.log(requestBody);
 
 	var xhr = new XMLHttpRequest();
